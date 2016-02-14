@@ -14,6 +14,8 @@ var express = require('express'),
 var app = express();
 mongoose.connect(process.env.MONGOLAB_URI);
 
+require('./config/passport')(passport);
+
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json());             //
@@ -29,7 +31,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
     
-routes(app);
+routes(app, passport);
 
 var port = process.env.PORT || 8080;
 app.listen(port,  function () {
